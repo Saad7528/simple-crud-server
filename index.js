@@ -37,8 +37,23 @@ const run = async () => {
                 _id: new ObjectId(id)
             }
             const user = await userCollection.findOne(query)
-            console.log("user id", id);
             res.send(user)
+        })
+
+        app.post('/users', async (req, res) => {
+            const newUser = req.body;
+            console.log(newUser);
+            const result = await userCollection.insertOne(newUser);
+            res.send(result);
+        })
+
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = {
+                _id: new ObjectId(id)
+            }
+            const result = await userCollection.deleteOne(query)
+            res.send(result);
         })
 
         await client.db("admin").command({ ping: 1 });
